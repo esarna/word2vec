@@ -5,9 +5,7 @@ EMBEDDING_DIM = 100
 CONTEXT_SIZE = 2
 NUM_NEGATIVE_SAMPLES = 5
 LEARNING_RATE = 0.025
-NUM_EPOCHS = 5
 MIN_COUNT = 1
-SUBSAMPLING_THRESHOLD = 1e-3
 
 
 corpus = [
@@ -36,7 +34,7 @@ losses = trainer.train()
 
 for query in ["do", "you", "work", "can"]:
     if query in trainer.vocab.word2id:
-        similar = trainer.most_similar(query, top_n=5)
-        print(f"\nMost similar to '{query}':")
-        for word, sim in similar:
-            print(f"  {word:15s} {sim:.4f}")
+        trainer.most_similar(query, top_n=5)
+
+
+trainer.analogy("great", "excellence", "not", top_n=5)

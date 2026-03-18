@@ -88,10 +88,14 @@ class Word2VecTrainer:
             if len(results) >= top_n:
                 break
 
+        print(f"\nMost similar to '{word}':")
+        for word, sim in results:
+            print(f"  {word:15s} {sim:.4f}")
+
         return results
 
     def analogy(self, a: str, b: str, c: str, top_n: int = 5) -> list[tuple[str, float]]:
-
+        # a - b + c = ?
         for w in [a, b, c]:
             if w not in self.vocab.word2id:
                 print(f"Word '{w}' not in vocabulary")
@@ -99,8 +103,8 @@ class Word2VecTrainer:
 
         exclude = {self.vocab.word2id[a], self.vocab.word2id[b], self.vocab.word2id[c]}
         target_vec = (
-            self.model.get_embedding(self.vocab.word2id[b])
-            - self.model.get_embedding(self.vocab.word2id[a])
+            self.model.get_embedding(self.vocab.word2id[a])
+            - self.model.get_embedding(self.vocab.word2id[b])
             + self.model.get_embedding(self.vocab.word2id[c])
         )
 
@@ -119,5 +123,7 @@ class Word2VecTrainer:
                 results.append((self.vocab.id2word[idx], float(similarities[idx])))
             if len(results) >= top_n:
                 break
+
+        print(f"\nAnalogy: {a} - {b} + {c} = {[r[0] for r in results]}")
 
         return results

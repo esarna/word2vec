@@ -2,14 +2,6 @@ import os
 import numpy as np
 from word2vec.Word2VecTrainer import Word2VecTrainer
 
-EMBEDDING_DIM = 100
-CONTEXT_SIZE = 2
-NUM_NEGATIVE_SAMPLES = 5
-LEARNING_RATE = 0.025
-NUM_EPOCHS = 5
-MIN_COUNT = 1
-SUBSAMPLING_THRESHOLD = 1e-3
-
 
 def load_conll_sentences(filepath: str, max_sentences: int = 5000) -> list[str]:
     sentences = []
@@ -58,7 +50,9 @@ losses_large = trainer_large.train()
 
 for query in ["the", "said", "would", "new", "time", "people", "first"]:
     if query in trainer_large.vocab.word2id:
-        similar = trainer_large.most_similar(query, top_n=5)
-        print(f"\nMost similar to '{query}':")
-        for word, sim in similar:
-            print(f"  {word:15s} {sim:.4f}")
+        trainer_large.most_similar(query, top_n=5)
+
+trainer_large.analogy("are", "you", "i", top_n=5)
+trainer_large.analogy("chicago", "city", "country", top_n=5)
+trainer_large.analogy("is", "it", "you", top_n=5)
+trainer_large.analogy("luxury", "auto", "gold", top_n=5)
